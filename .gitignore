@@ -7,5 +7,7 @@ proj.linux/
 proj.win8.1-universal/
 proj.win10/
 proj.win32/
+MemoryCard/
+.MemoryCard.zip
 .cocos-project.json
 CMakeLists.txt

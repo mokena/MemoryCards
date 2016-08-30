@@ -1,5 +1,7 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
+#include "CardFactory.h"
+#include "Card.h"
 
 USING_NS_CC;
 
@@ -30,6 +32,12 @@ bool HelloWorld::init()
     
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	CardFactory cardFactory;
+	auto card = dynamic_cast<Card*>(cardFactory.createCard(4, 5));
+	addChild(card);
+	card->setPosition(visibleSize / 2);
+	((Card*)card)->flipToFront(nullptr);
 
     return true;
 }
