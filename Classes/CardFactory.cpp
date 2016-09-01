@@ -6,14 +6,16 @@
 USING_NS_CC;
 
 ICard* CardFactory::createCard(int backId, int number) {
-	const int cardSize = 256; //back image's width and height;
+	int cardSize = 256; //back image's width and height;
 
 	if (backId < 0 || backId >= 8) { backId = 0; }
 	
 	//front side
 	Node* frontImg = Node::create();
+	auto fmg = Sprite::create("card_front.png");
+	cardSize = fmg->getContentSize().width;
 	frontImg->setContentSize(Size(cardSize, cardSize));
-	frontImg->addChild(Sprite::create("card_front.png"));
+	frontImg->addChild(fmg);
 	auto numberText = ui::TextAtlas::create(StringUtils::format("%d", number), "card_number.png",
 		140, 140, "0");
 	frontImg->addChild(numberText);
