@@ -85,10 +85,10 @@ CardState Card::getCardState() const {
 	return state;
 }
 
-CardData Card::getCardData() {
+CardData* Card::getCardData() {
 	return data;
 }
 
-void Card::setCardData(CardData data) {
+void Card::setCardData(CardData* data) {
 	this->data = data;
 }

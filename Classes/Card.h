@@ -9,7 +9,7 @@ class Card : public ICard, public Node {
 	virtual ~Card();
 protected:
 	CardState state;
-	CardData data;
+	CardData* data;
 	CC_PROPERTY(Node*, frontImage, FrontImage);
 	CC_PROPERTY(Node*, backImage, BackImage);
 	void flipFromTo(Node* a, Node* b, const std::function<void()> &callback = nullptr);
@@ -19,6 +19,6 @@ public:
 	virtual void flipToFront(const std::function<void()> &callback = nullptr);
 	virtual void flipToBack(const std::function<void()> &callback = nullptr);
 	virtual CardState getCardState() const;
-	virtual CardData getCardData();
-	virtual void setCardData(CardData data);
+	virtual CardData* getCardData();
+	virtual void setCardData(CardData* data);
 };

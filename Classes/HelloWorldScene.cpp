@@ -2,6 +2,7 @@
 #include "SimpleAudioEngine.h"
 #include "CardFactory.h"
 #include "Card.h"
+#include "GameLevel.h"
 
 USING_NS_CC;
 
@@ -32,12 +33,18 @@ bool HelloWorld::init()
     
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-	CardFactory cardFactory;
-	auto card = dynamic_cast<Card*>(cardFactory.createCard(4, 5));
-	addChild(card);
-	card->setPosition(visibleSize / 2);
-	((Card*)card)->flipToFront(nullptr);
+	LevelData data = {};
+	data.column = 4;
+	data.row = 4;
+	auto level = GameLevel::create(data);
+	float scale = visibleSize.width / (level->getContentSize().width + 40);
+	
+	level->setAnchorPoint(Vec2(0.5, 0.5));
+	level->ignoreAnchorPointForPosition(false);
+	level->setPosition(visibleSize/2);
+	level->setScale(scale);
+	
+	addChild(level);
 
     return true;
 }

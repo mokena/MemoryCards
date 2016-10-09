@@ -29,7 +29,7 @@ ICard* CardFactory::createCard(int backId, int number) {
 	data.number = number;
 
 	Card* card = Card::create();
-	card->setCardData(data);
+	card->setCardData(&data);
 	card->setFrontImage(frontImg);
 	card->setBackImage(backImg);
 	card->setContentSize(backImg->getContentSize());

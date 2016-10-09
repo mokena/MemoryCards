@@ -3,15 +3,16 @@
 #include "cocos2d.h"
 #include "CardFactory.h"
 #include "LevelData.h"
-//#include "vector"
+#include <vector>
 #include "Card.h"
 
 USING_NS_CC;
 
-class GameLevel : public CCLayer {
+class GameLevel : public Layer {
 	
 	LevelData levelData;
-	Vector<Vector<Card*>> cardsTable;
+	std::vector<std::vector<Card*>> cardsTable;
+	int remainCards;//how many cards remains
 
 public:
 	GameLevel();
