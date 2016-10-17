@@ -14,12 +14,16 @@ class GameLevel : public Layer {
 	std::vector<std::vector<Card*>> cardsTable;
 	int remainCards;//how many cards remains
 
+	Card* selectedA;
+	Card* selectedB;
+
 public:
 	GameLevel();
 	virtual ~GameLevel();
 
 	static GameLevel* create(LevelData data);
 	bool initWithData(LevelData data);
+	void initTouchEvent();
 
 protected:
 	void initLayout();

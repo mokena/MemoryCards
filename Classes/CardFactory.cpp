@@ -25,11 +25,11 @@ ICard* CardFactory::createCard(int backId, int number) {
 	int by = (backId / 2)*cardSize;
 	auto backImg = Sprite::create("card_back.png", Rect(bx, by, cardSize, cardSize));
 
-	CardData data;
+	CardData data = {};
 	data.number = number;
 
 	Card* card = Card::create();
-	card->setCardData(&data);
+	card->setCardData(data);
 	card->setFrontImage(frontImg);
 	card->setBackImage(backImg);
 	card->setContentSize(backImg->getContentSize());
