@@ -120,7 +120,7 @@ void GameLevel::initTouchEvent() {
 					sb->removeFromParent();
 				});
 				cardsTable[dataA->column][dataA->row] = nullptr;
-				//cardsTable[dataB->column][dataB->row] = nullptr;
+				cardsTable[dataB->column][dataB->row] = nullptr;
 				remainCards = -2;
 			}
 			else {
