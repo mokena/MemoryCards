@@ -29,6 +29,7 @@ bool GameLevel::initWithData(LevelData data) {
 	}
 
 	levelData = data;
+	
 	initLayout();
 	initTouchEvent();
 	return true;
@@ -39,16 +40,25 @@ void GameLevel::initLayout() {
 		std::vector<Card*> r(levelData.row);
 		cardsTable.push_back(r);
 	}
+	
+	srand(time(nullptr));
 
-	int bgColor = CCRANDOM_0_1() * 8;
+	int bgColor = floor(CCRANDOM_0_1() * 8);
 	CardFactory factory;
 	int number = 0, space = 40;
+	Vector<Card*> initCards;
+	for (number = 0; number < levelData.column*levelData.row; number++) {
+		Card* card = (Card*)(factory.createCard(bgColor, number / 2));
+		initCards.pushBack(card);
+	}
+	remainCards = levelData.column*levelData.row;
+
 	for (int column = 0; column < levelData.column; column++) {
 		for (int row = 0; row < levelData.row; row++) {
-			Card* card = (Card*)(factory.createCard(bgColor, number++ / 2));
+			Card* card = initCards.at(CCRANDOM_0_1()*initCards.size());
+			initCards.eraseObject(card);
 			card->getCardData()->column = column;
 			card->getCardData()->row = row;
-
 			Size cardSize = card->getContentSize();
 			card->setPosition(Vec2((cardSize.width + space)*row + cardSize.width / 2,
 				(cardSize.height + space)*column + cardSize.height / 2));
