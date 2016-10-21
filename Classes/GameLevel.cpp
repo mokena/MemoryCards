@@ -2,7 +2,10 @@
 
 GameLevel::GameLevel() :
 selectedA(nullptr),
-selectedB(nullptr) {}
+selectedB(nullptr),
+pairCallback(nullptr),
+completeCallback(nullptr) {
+}
 
 GameLevel::~GameLevel() {
 	removeAllChildren();
@@ -123,6 +126,10 @@ void GameLevel::initTouchEvent() {
 			Card* sb = selectedB;
 			CardData* dataA = sa->getCardData();
 			CardData* dataB = sb->getCardData();
+			if (pairCallback != nullptr) {
+				pairCallback(dataA, dataB);
+			}
+
 			if (dataA->number == dataB->number) {
 				selectedB->flipToFront([&, sa, sb]() {
 					//sa->runAction(Spawn::create();
@@ -131,7 +138,11 @@ void GameLevel::initTouchEvent() {
 				});
 				cardsTable[dataA->column][dataA->row] = nullptr;
 				cardsTable[dataB->column][dataB->row] = nullptr;
-				remainCards = -2;
+				remainCards -= 2;
+				CCLOG("remainCards: %d", remainCards);
+				if (remainCards == 0 && completeCallback != nullptr) {
+					completeCallback();
+				}
 			}
 			else {
 				selectedB->flipToFront([&, sa, sb]() {
@@ -144,4 +155,9 @@ void GameLevel::initTouchEvent() {
 		}
 	};
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+}
+
+void GameLevel::registerCallback(std::function<void(CardData*, CardData*)> pairFunc, std::function<void()> completeFunc) {
+	pairCallback = pairFunc;
+	completeCallback = completeFunc;
 }

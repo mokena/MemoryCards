@@ -17,6 +17,9 @@ class GameLevel : public Layer {
 	Card* selectedA;
 	Card* selectedB;
 
+	std::function<void(CardData*, CardData*)> pairCallback;
+	std::function<void()> completeCallback;
+
 public:
 	GameLevel();
 	virtual ~GameLevel();
@@ -24,6 +27,8 @@ public:
 	static GameLevel* create(LevelData data);
 	bool initWithData(LevelData data);
 	void initTouchEvent();
+
+	void registerCallback(std::function<void(CardData*, CardData*)> pairFunc, std::function<void()> completeFunc);
 
 protected:
 	void initLayout();

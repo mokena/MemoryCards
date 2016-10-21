@@ -43,6 +43,16 @@ bool HelloWorld::init()
 	level->ignoreAnchorPointForPosition(false);
 	level->setPosition(visibleSize/2);
 	level->setScale(scale);
+	level->registerCallback([&](CardData* dataA, CardData* dataB) {
+		if (dataA->number == dataB->number) {
+			CCLOG("paired!");
+		}
+		else {
+			CCLOG("Not a match!");
+		}
+	}, [&]() {
+		CCLOG("Congratulations, you finished!");
+	});
 	
 	addChild(level);
 
