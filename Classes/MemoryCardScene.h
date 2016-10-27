@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "BaseScoreStrategy.h"
 #include "GameLevel.h"
+#include "Background.h"
 USING_NS_CC;
 
 class MemoryCardScene : public Layer {
@@ -10,6 +11,7 @@ public:
 	BaseScoreStrategy* scoreStrategy;
 	GameLevel* curLevel;
 	ScoreData scoreData;
+	Background* bg;
 
 	MemoryCardScene();
 	virtual ~MemoryCardScene();

@@ -34,6 +34,9 @@ bool MemoryCardScene::initWithStrategy(BaseScoreStrategy* strategy) {
 		return false;
 	}
 
+	bg = Background::create();
+	addChild(bg);
+
 	newGame();
 	return true;
 }
