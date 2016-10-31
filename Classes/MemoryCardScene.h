@@ -4,6 +4,8 @@
 #include "BaseScoreStrategy.h"
 #include "GameLevel.h"
 #include "Background.h"
+#include "ProgressBar.h"
+#include "ScoreText.h"
 USING_NS_CC;
 
 class MemoryCardScene : public Layer {
@@ -12,6 +14,10 @@ public:
 	GameLevel* curLevel;
 	ScoreData scoreData;
 	Background* bg;
+	ProgressBar* progress;
+	ScoreText* scoreText;
+	Size visibleSize;
+	LevelData curData;
 
 	MemoryCardScene();
 	virtual ~MemoryCardScene();
@@ -20,4 +26,5 @@ public:
 	static Scene* createScene(BaseScoreStrategy* strategy);
 	virtual bool initWithStrategy(BaseScoreStrategy* strategy);
 	void newGame();
+	void update(float dt);
 };

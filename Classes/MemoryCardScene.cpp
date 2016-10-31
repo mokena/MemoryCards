@@ -6,7 +6,7 @@ MemoryCardScene::MemoryCardScene() :
 }
 
 MemoryCardScene::~MemoryCardScene() {
-
+	unscheduleUpdate();
 }
 
 Scene* MemoryCardScene::createScene(BaseScoreStrategy* strategy) {
@@ -34,22 +34,35 @@ bool MemoryCardScene::initWithStrategy(BaseScoreStrategy* strategy) {
 		return false;
 	}
 
+	visibleSize = Director::getInstance()->getVisibleSize();
+
 	bg = Background::create();
 	addChild(bg);
 
+	progress = ProgressBar::create();
+	progress->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - progress->getContentSize().height/2 - 20));
+	addChild(progress);
+
+	scoreText = ScoreText::create();
+	auto scoreSize = scoreText->getContentSize();
+	scoreText->setPosition(Vec2(visibleSize.width - 20, visibleSize.height - scoreSize.height/2 - 20));
+	addChild(scoreText);
+
 	newGame();
+
+	scheduleUpdate();
 	return true;
 }
 void MemoryCardScene::newGame() {
 
 	scoreData.energy = 1000;
-
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	
 	LevelData data = {};
 	data.column = 4;
 	data.row = 4;
-	auto level = GameLevel::create(data);
+	data.loss = 20;
+	curData = data;
+	auto level = curLevel = GameLevel::create(data);
 	float scale = visibleSize.width / (level->getContentSize().width + 40);
 
 	level->setAnchorPoint(Vec2(0.5, 0.5));
@@ -70,4 +83,18 @@ void MemoryCardScene::newGame() {
 	});
 
 	addChild(level);
+}
+
+void MemoryCardScene::update(float dt) {
+	Layer::update(dt);
+	scoreData.energy -= curData.loss*dt;
+	if (scoreData.energy > 1000) {
+		scoreData.energy = 1000;
+	}
+	else if (scoreData.energy < 0) {
+		scoreData.energy = 0;
+	}
+
+	progress->updateView(scoreData.energy);
+	scoreText->updateView(scoreData.score);
 }
