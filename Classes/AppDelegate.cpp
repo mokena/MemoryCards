@@ -76,7 +76,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-	ScoreStrategy* strategy = new ScoreStrategy();
+	std::shared_ptr<ScoreStrategy> strategy(new ScoreStrategy());
     auto scene = MemoryCardScene::createScene(strategy);
 
     // run

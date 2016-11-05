@@ -27,7 +27,7 @@ bool GameLevel::initWithData(LevelData data) {
 		return false;
 	}
 
-	if (data.column % 2 != 0 || data.row % 2 != 0) {
+	if (data.column*data.row % 2 != 0) {
 		return false;
 	}
 
