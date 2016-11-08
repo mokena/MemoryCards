@@ -6,6 +6,7 @@
 #include "Background.h"
 #include "ProgressBar.h"
 #include "ScoreText.h"
+#include "PauseBox.h"
 USING_NS_CC;
 
 class MemoryCardScene : public Layer {
@@ -18,6 +19,8 @@ public:
 	ScoreText* scoreText;
 	Size visibleSize;
 	LevelData curData;
+	ui::Button* pauseBtn;
+	PauseBox* pauseBox;
 
 	int nowLevel;
 	int levelCount;
@@ -34,4 +37,5 @@ public:
 
 	void nextLevel();
 	void initLevelData();
+	void initUI();
 };

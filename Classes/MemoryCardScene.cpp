@@ -2,7 +2,8 @@
 
 MemoryCardScene::MemoryCardScene() :
 	scoreData({}),
-	curLevel(nullptr) {
+	curLevel(nullptr),
+	pauseBox(nullptr) {
 	scoreData.energy = 1000;
 }
 
@@ -28,7 +29,6 @@ MemoryCardScene* MemoryCardScene::create(std::shared_ptr<BaseScoreStrategy> stra
 	return nullptr;
 }
 
-
 bool MemoryCardScene::initWithStrategy(std::shared_ptr<BaseScoreStrategy> strategy) {
 	scoreStrategy = strategy;
 	
@@ -36,21 +36,8 @@ bool MemoryCardScene::initWithStrategy(std::shared_ptr<BaseScoreStrategy> strate
 		return false;
 	}
 
-	visibleSize = Director::getInstance()->getVisibleSize();
-
-	bg = Background::create();
-	addChild(bg);
-
-	progress = ProgressBar::create();
-	progress->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - progress->getContentSize().height/2 - 20));
-	addChild(progress);
-
-	scoreText = ScoreText::create();
-	auto scoreSize = scoreText->getContentSize();
-	scoreText->setPosition(Vec2(visibleSize.width - 20, visibleSize.height - scoreSize.height/2 - 20));
-	addChild(scoreText);
-
 	initLevelData();
+	initUI();
 
 	newGame();
 
@@ -94,6 +81,36 @@ void MemoryCardScene::initLevelData() {
 	levelCount = levelDatas.size();
 }
 
+void MemoryCardScene::initUI() {
+	visibleSize = Director::getInstance()->getVisibleSize();
+
+	bg = Background::create();
+	addChild(bg);
+
+	progress = ProgressBar::create();
+	progress->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - progress->getContentSize().height / 2 - 20));
+	addChild(progress);
+
+	scoreText = ScoreText::create();
+	auto scoreSize = scoreText->getContentSize();
+	scoreText->setPosition(Vec2(visibleSize.width - 20, visibleSize.height - scoreSize.height / 2 - 20));
+	addChild(scoreText);
+
+	pauseBtn = ui::Button::create("pause.png");
+	pauseBtn->setAnchorPoint(Vec2(0, 1));
+	pauseBtn->setPosition(Vec2(0, visibleSize.height));
+	addChild(pauseBtn);
+
+	pauseBtn->addClickEventListener([&](Ref* ref) {
+		this->unscheduleUpdate();
+		pauseBox = PauseBox::create();
+		pauseBox->registerCallback([&]() {
+			this->scheduleUpdate();
+		}, []() {});
+		this->addChild(pauseBox);
+	});
+}
+
 void MemoryCardScene::newGame() {
 	nowLevel = -1;
 	nextLevel();
@@ -135,6 +152,12 @@ void MemoryCardScene::nextLevel() {
 
 void MemoryCardScene::update(float dt) {
 	Layer::update(dt);
+
+	if (pauseBox != nullptr) {
+		pauseBox->removeFromParent();
+		pauseBox = nullptr;
+	}
+
 	scoreData.energy -= curData.loss*dt;
 	if (scoreData.energy > 1000) {
 		scoreData.energy = 1000;
