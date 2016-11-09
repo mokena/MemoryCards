@@ -38,4 +38,5 @@ public:
 	void nextLevel();
 	void initLevelData();
 	void initUI();
+	virtual void onExit();
 };

@@ -23,6 +23,7 @@ bool PauseBox::init() {
 	auto continueBtn = ui::Button::create("continue.png");
 	auto endBtn = ui::Button::create("end_game.png");
 
+	box->setContentSize(Size(450, 450));
 	box->setPosition(Vec2(viewSize.width / 2, viewSize.height / 2));
 	continueBtn->setPosition(Vec2(viewSize.width / 2, viewSize.height / 2 + 70));
 	endBtn->setPosition(Vec2(viewSize.width / 2, viewSize.height / 2 - 70));

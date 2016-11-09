@@ -1,6 +1,5 @@
 #include "AppDelegate.h"
-#include "MemoryCardScene.h"
-#include "ScoreStrategy.h"
+#include "StartScene.h"
 
 USING_NS_CC;
 
@@ -76,8 +75,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-	std::shared_ptr<ScoreStrategy> strategy(new ScoreStrategy());
-    auto scene = MemoryCardScene::createScene(strategy);
+	Scene* scene = StartScene::createScene();
 
     // run
     director->runWithScene(scene);

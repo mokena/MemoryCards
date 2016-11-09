@@ -106,7 +106,9 @@ void MemoryCardScene::initUI() {
 		pauseBox = PauseBox::create();
 		pauseBox->registerCallback([&]() {
 			this->scheduleUpdate();
-		}, []() {});
+		}, []() {
+			Director::getInstance()->popScene();
+		});
 		this->addChild(pauseBox);
 	});
 }
@@ -168,4 +170,12 @@ void MemoryCardScene::update(float dt) {
 
 	progress->updateView(scoreData.energy);
 	scoreText->updateView(scoreData.score);
+}
+
+void MemoryCardScene::onExit() {
+	Layer::onExit();
+	if (pauseBox != nullptr) {
+		pauseBox->removeFromParent();
+		pauseBox = nullptr;
+	}
 }
