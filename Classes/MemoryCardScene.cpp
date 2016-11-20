@@ -1,4 +1,5 @@
 #include "MemoryCardScene.h"
+#include "SceneMediator.h"
 
 MemoryCardScene::MemoryCardScene() :
 	scoreData({}),
@@ -107,7 +108,7 @@ void MemoryCardScene::initUI() {
 		pauseBox->registerCallback([&]() {
 			this->scheduleUpdate();
 		}, []() {
-			Director::getInstance()->popScene();
+			SceneMediator::gotoStartScene();
 		});
 		this->addChild(pauseBox);
 	});

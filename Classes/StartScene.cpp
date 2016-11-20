@@ -1,4 +1,5 @@
 #include "StartScene.h"
+#include "SceneMediator.h"
 
 StartScene::StartScene() :
 	bg(nullptr),
@@ -39,14 +40,15 @@ bool StartScene::init() {
 	startBtn->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 - 50));
 	addChild(startBtn);
 	startBtn->addClickEventListener([](Ref* ref) {
-		std::shared_ptr<ScoreStrategy> strategy(new ScoreStrategy());
-		auto scene = MemoryCardScene::createScene(strategy);
-		Director::getInstance()->pushScene(scene);
+		SceneMediator::gotoGameScene();
 	});
 
 	chartBtn = ui::Button::create("charts.png");
 	chartBtn->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 - 110));
 	addChild(chartBtn);
+	chartBtn->addClickEventListener([](Ref* ref) {
+		SceneMediator::gotoChartsScene();
+	});
 
 	exitBtn = ui::Button::create("exit.png");
 	exitBtn->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 - 170));
