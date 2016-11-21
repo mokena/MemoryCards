@@ -36,7 +36,7 @@ bool ChartsScene::init() {
 	backBtn->setPosition(Vec2(10, visibleSize.height - 10));
 	addChild(backBtn);
 	backBtn->addClickEventListener([](Ref* ref) {
-		SceneMediator::gotoStartScene();
+		SceneMediator::getInstance()->gotoStartScene();
 	});
 
 	newScoreImg = Sprite::create("new_score.png");
@@ -47,7 +47,7 @@ bool ChartsScene::init() {
 	newScore = ui::TextAtlas::create("0", "number.png", 63, 83, "0");
 	newScore->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 + 50));
 	addChild(newScore);
-	auto newScr = UserDefault::getInstance()->getIntegerForKey(NEW_SCORE, 0);
+	int newScr = UserDefault::getInstance()->getIntegerForKey(NEW_SCORE, 0);
 	newScore->setString(StringUtils::format("%d", newScr).c_str());
 
 	chartsImg = Sprite::create("charts_score.png");
@@ -56,7 +56,7 @@ bool ChartsScene::init() {
 	addChild(chartsImg);
 
 	for (int i = 0; i < 5; i++) {
-		auto score = UserDefault::getInstance()->getIntegerForKey(StringUtils::format(
+		int score = UserDefault::getInstance()->getIntegerForKey(StringUtils::format(
 			"%s%d", RANK_SCORE, i).c_str(), 0);
 		Node* chartRow = createChartRow(i, score);
 		addChild(chartRow);

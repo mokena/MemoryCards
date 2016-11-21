@@ -40,14 +40,14 @@ bool StartScene::init() {
 	startBtn->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 - 50));
 	addChild(startBtn);
 	startBtn->addClickEventListener([](Ref* ref) {
-		SceneMediator::gotoGameScene();
+		SceneMediator::getInstance()->gotoGameScene();
 	});
 
 	chartBtn = ui::Button::create("charts.png");
 	chartBtn->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 - 110));
 	addChild(chartBtn);
 	chartBtn->addClickEventListener([](Ref* ref) {
-		SceneMediator::gotoChartsScene();
+		SceneMediator::getInstance()->gotoChartsScene();
 	});
 
 	exitBtn = ui::Button::create("exit.png");

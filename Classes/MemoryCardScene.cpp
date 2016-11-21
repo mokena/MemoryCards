@@ -1,5 +1,6 @@
 #include "MemoryCardScene.h"
 #include "SceneMediator.h"
+#include "UserData.h"
 
 MemoryCardScene::MemoryCardScene() :
 	scoreData({}),
@@ -108,7 +109,7 @@ void MemoryCardScene::initUI() {
 		pauseBox->registerCallback([&]() {
 			this->scheduleUpdate();
 		}, []() {
-			SceneMediator::gotoStartScene();
+			SceneMediator::getInstance()->gotoStartScene();
 		});
 		this->addChild(pauseBox);
 	});
@@ -165,8 +166,29 @@ void MemoryCardScene::update(float dt) {
 	if (scoreData.energy > 1000) {
 		scoreData.energy = 1000;
 	}
-	else if (scoreData.energy < 0) {
+	else if (scoreData.energy <= 0) {
 		scoreData.energy = 0;
+
+		UserDefault::getInstance()->setIntegerForKey(NEW_SCORE, scoreData.score);
+		std::vector<int> scoreList;
+		scoreList.push_back(scoreData.score);
+
+		for (int i = 0; i < 5; i++) {
+			int score = UserDefault::getInstance()->getIntegerForKey(StringUtils::format("%s%d", RANK_SCORE, i).c_str(), 0);
+			scoreList.push_back(score);
+		}
+		std::sort(scoreList.begin(), scoreList.end(), [](int &a, int &b) {
+			return a > b;
+		});
+
+		int rank = 0;
+		for (auto i = scoreList.begin(); i < scoreList.end(); i++) {
+			UserDefault::getInstance()->setIntegerForKey(StringUtils::format("%s%d", RANK_SCORE, rank).c_str(), *i);
+			rank++;
+		}
+		UserDefault::getInstance()->flush();
+		unscheduleUpdate();
+		SceneMediator::getInstance()->gotoChartsScene();
 	}
 
 	progress->updateView(scoreData.energy);

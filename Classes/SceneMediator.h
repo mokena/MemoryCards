@@ -5,8 +5,11 @@
 USING_NS_CC;
 
 class SceneMediator {
+protected:
+	static SceneMediator* instance;
 public:
-	static void gotoGameScene();
-	static void gotoStartScene();
-	static void gotoChartsScene();
+	static SceneMediator* getInstance();
+	void gotoGameScene();
+	void gotoStartScene();
+	void gotoChartsScene();
 };

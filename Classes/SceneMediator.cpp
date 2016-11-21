@@ -4,6 +4,16 @@
 #include "StartScene.h"
 #include "ChartsScene.h"
 
+SceneMediator* SceneMediator::instance = nullptr;
+
+SceneMediator* SceneMediator::getInstance() {
+	if (instance == nullptr) {
+		instance = new SceneMediator();
+	}
+
+	return instance;
+}
+
 void SceneMediator::gotoGameScene() {
 	std::shared_ptr<ScoreStrategy> strategy(new ScoreStrategy());
 	auto scene = MemoryCardScene::createScene(strategy);
