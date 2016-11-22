@@ -169,12 +169,14 @@ void MemoryCardScene::update(float dt) {
 	else if (scoreData.energy <= 0) {
 		scoreData.energy = 0;
 
-		UserDefault::getInstance()->setIntegerForKey(NEW_SCORE, scoreData.score);
+		UserDefault::sharedUserDefault()->setIntegerForKey(NEW_SCORE, scoreData.score);
+		//UserDefault::sharedUserDefault()->flush();
+		int a = UserDefault::sharedUserDefault()->getIntegerForKey(NEW_SCORE, 0);
 		std::vector<int> scoreList;
 		scoreList.push_back(scoreData.score);
 
 		for (int i = 0; i < 5; i++) {
-			int score = UserDefault::getInstance()->getIntegerForKey(StringUtils::format("%s%d", RANK_SCORE, i).c_str(), 0);
+			int score = UserDefault::sharedUserDefault()->getIntegerForKey(StringUtils::format("%s%d", RANK_SCORE, i).c_str(), 0);
 			scoreList.push_back(score);
 		}
 		std::sort(scoreList.begin(), scoreList.end(), [](int &a, int &b) {
@@ -183,10 +185,11 @@ void MemoryCardScene::update(float dt) {
 
 		int rank = 0;
 		for (auto i = scoreList.begin(); i < scoreList.end(); i++) {
-			UserDefault::getInstance()->setIntegerForKey(StringUtils::format("%s%d", RANK_SCORE, rank).c_str(), *i);
+			UserDefault::sharedUserDefault()->setIntegerForKey(StringUtils::format("%s%d", RANK_SCORE, rank).c_str(), *i);
+			//UserDefault::sharedUserDefault()->flush();
 			rank++;
 		}
-		UserDefault::getInstance()->flush();
+		UserDefault::sharedUserDefault()->flush();
 		unscheduleUpdate();
 		SceneMediator::getInstance()->gotoChartsScene();
 	}
