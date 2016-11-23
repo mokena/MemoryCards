@@ -132,9 +132,30 @@ void GameLevel::initTouchEvent() {
 
 			if (dataA->number == dataB->number) {
 				selectedB->flipToFront([&, sa, sb]() {
-					//sa->runAction(Spawn::create();
-					sa->removeFromParent();
-					sb->removeFromParent();
+					sa->runAction(Sequence::create(Spawn::create(FadeOut::create(0.25f), ScaleTo::create(0.25f, 0.25f), NULL), CallFunc::create([this, sa]() {
+						ParticleExplosion* p = ParticleExplosion::create();
+						p->setSpeed(500);
+						p->setSpeedVar(1000);
+						p->setStartColor(Color4F(1, 1, 1, 0.5));
+						p->setStartColorVar(Color4F(0, 0, 0, 0.5));
+						p->setEndColor(Color4F(1, 1, 1, 0.5));
+						p->setEndColorVar(Color4F(0, 0, 0, 0.5));
+						p->setPosition(sa->getPosition());
+						this->addChild(p);
+						sa->removeFromParent();
+					}), NULL));
+					sb->runAction(Sequence::create(Spawn::create(FadeOut::create(0.25f), ScaleTo::create(0.25f, 0.25f), NULL), CallFunc::create([this, sb]() {
+						ParticleExplosion* p = ParticleExplosion::create();
+						p->setSpeed(500);
+						p->setSpeedVar(1000);
+						p->setStartColor(Color4F(1, 1, 1, 0.5));
+						p->setStartColorVar(Color4F(0, 0, 0, 0.5));
+						p->setEndColor(Color4F(1, 1, 1, 0.5));
+						p->setEndColorVar(Color4F(0, 0, 0, 0.5));
+						p->setPosition(sb->getPosition());
+						this->addChild(p);
+						sb->removeFromParent();
+					}), NULL));
 				});
 				cardsTable[dataA->column][dataA->row] = nullptr;
 				cardsTable[dataB->column][dataB->row] = nullptr;
