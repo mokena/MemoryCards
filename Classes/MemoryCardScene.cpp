@@ -1,6 +1,7 @@
 #include "MemoryCardScene.h"
 #include "SceneMediator.h"
 #include "UserData.h"
+#include "SimpleAudioEngine.h"
 
 MemoryCardScene::MemoryCardScene() :
 	scoreData({}),
@@ -11,6 +12,7 @@ MemoryCardScene::MemoryCardScene() :
 
 MemoryCardScene::~MemoryCardScene() {
 	unscheduleUpdate();
+	CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 }
 
 Scene* MemoryCardScene::createScene(std::shared_ptr<BaseScoreStrategy> strategy) {
@@ -37,6 +39,8 @@ bool MemoryCardScene::initWithStrategy(std::shared_ptr<BaseScoreStrategy> strate
 	if (Layer::init() == false) {
 		return false;
 	}
+
+	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("pitpat.mp3");
 
 	initLevelData();
 	initUI();
@@ -192,6 +196,13 @@ void MemoryCardScene::update(float dt) {
 		UserDefault::sharedUserDefault()->flush();
 		unscheduleUpdate();
 		SceneMediator::getInstance()->gotoChartsScene();
+	}
+
+	if (scoreData.energy < 500) {
+		CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume((500.0f - scoreData.energy) / 500.0f);
+	}
+	else {
+		CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.0f);
 	}
 
 	progress->updateView(scoreData.energy);

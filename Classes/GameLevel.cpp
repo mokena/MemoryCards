@@ -1,4 +1,5 @@
 #include "GameLevel.h"
+#include "SimpleAudioEngine.h"
 
 GameLevel::GameLevel() :
 selectedA(nullptr),
@@ -143,6 +144,7 @@ void GameLevel::initTouchEvent() {
 						p->setPosition(sa->getPosition());
 						this->addChild(p);
 						sa->removeFromParent();
+						CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("ye.mp3");
 					}), NULL));
 					sb->runAction(Sequence::create(Spawn::create(FadeOut::create(0.25f), ScaleTo::create(0.25f, 0.25f), NULL), CallFunc::create([this, sb]() {
 						ParticleExplosion* p = ParticleExplosion::create();
